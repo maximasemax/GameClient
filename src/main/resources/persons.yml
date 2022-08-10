@@ -1,0 +1,19 @@
+name: David
+persons:
+- name: "Bibob Boy"
+  hp: 100.0
+  attackSkill: 1.0
+  defenceSkill: 1.0
+- name: "Bomgic"
+  hp: 100.0
+  attackSkill: 2.0
+  defenceSkill: 2.0
+- name: "King"
+  hp: 100.0
+  attackSkill: 3.0
+  defenceSkill: 4.0
+- name: "Magor"
+  hp: 100.0
+  attackSkill: 1.0
+  defenceSkill: 3.0
+
