@@ -8,7 +8,7 @@ import java.util.List;
 
 public class JsonBuildForItem {
 
-    public List<Item> FromJsonItem(String jsonString){
+    public List<Item> fromJsonItem(String jsonString){
         return new Gson().fromJson(jsonString, ItemConfigurationImpl.class).getItems();
     }
 

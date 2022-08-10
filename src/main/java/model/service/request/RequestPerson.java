@@ -16,6 +16,6 @@ public class RequestPerson {
         for (char c : rezult) stringBuilder.append(c);
         String personsListStr = stringBuilder.toString();
         JsonBuildForPerson jsonBuildForPerson = new JsonBuildForPerson();
-        return jsonBuildForPerson.FromJsonPersons(personsListStr);
+        return jsonBuildForPerson.fromJsonPersons(personsListStr);
     }
 }

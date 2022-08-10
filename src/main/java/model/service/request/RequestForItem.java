@@ -15,6 +15,6 @@ public class RequestForItem {
         for (char c : rezult) stringBuilder.append(c);
         String itemsListStr = stringBuilder.toString();
         JsonBuildForItem jsonBuildForItem = new JsonBuildForItem();
-        return jsonBuildForItem.FromJsonItem(itemsListStr);
+        return jsonBuildForItem.fromJsonItem(itemsListStr);
     }
 }
