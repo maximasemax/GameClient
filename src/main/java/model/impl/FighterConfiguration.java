@@ -1,12 +1,12 @@
 package model.impl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FighterConfiguration {
     public String name;
-    public ArrayList<Fighter> fighters;
+    public List<Fighter> fighters;
 
-    public FighterConfiguration(String name, ArrayList<Fighter> fighters) {
+    public FighterConfiguration(String name, List<Fighter> fighters) {
         this.name = name;
         this.fighters = fighters;
     }
@@ -14,12 +14,11 @@ public class FighterConfiguration {
     public FighterConfiguration() {
     }
 
-    public ArrayList<Fighter> getFighters() {
+    public List<Fighter> getFighters() {
         return fighters;
     }
 
-    public void setFighters(ArrayList<Fighter> fighters) {
+    public void setFighters(List<Fighter> fighters) {
         this.fighters = fighters;
     }
-
 }

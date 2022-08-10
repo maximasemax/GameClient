@@ -4,6 +4,7 @@ import model.impl.Fighter;
 import model.impl.FighterConfiguration;
 import model.impl.Item;
 import model.impl.Person;
+import model.service.PersonService;
 import model.service.jsonBuild.JsonBuildForFight;
 import model.service.ItemService;
 import model.service.MenuService;
@@ -11,6 +12,7 @@ import model.service.MessageService;
 import model.service.request.RequestMetods;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class MenuServiceImpl implements MenuService {
 
     private final MessageService messageService = new MessageServiceImpl();
     private final Scanner scanner = new Scanner(System.in);
+    private final JsonBuildForFight jsonBuild = new JsonBuildForFight();
+    private final RequestMetods requestMetods = new RequestMetods();
 
     @Override
     public void startMenuService() throws Exception {
@@ -30,55 +34,66 @@ public class MenuServiceImpl implements MenuService {
 //TODO  МЕТОД ОГРОМНЫЙ , РАЗДЕЛИТЬ И НАЗВАТЬ НОРМАЛЬНО !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @Override
     public void startGame() throws IOException, InterruptedException, SQLException {
-        PersonServiceImpl personService = new PersonServiceImpl();
+        PersonService personService = new PersonServiceImpl();
         Person personUser = personService.chosePerson();
-        ItemService itemServiceImpl = new ItemServiceImpl();
-        List<Item> itemsUser = new ArrayList<>(itemServiceImpl.chooseItem());
+        ItemService itemService = new ItemServiceImpl();
+        List<Item> itemsUser = new ArrayList<>(itemService.chooseItem());
         Person personBot = personService.chosePersonBot();
         System.out.println(personBot.getName() + "\n");
-        List<Item> itemsBot = itemServiceImpl.chooseItemBot();
-        for (Item item : itemsBot) {
-            System.out.println(item.getName());
-        }
-        JsonBuildForFight jsonBuild = new JsonBuildForFight();
-        RequestMetods requestMetods = new RequestMetods();
+        List<Item> itemsBot = itemService.chooseItemBot();
+        itemsBot.forEach(item -> System.out.println(item.getName()));
         while (personUser.getHp() > 0 && personBot.getHp() > 0) {
-            Item itemUser = itemChoseUser(itemsUser);
-            Item itemBot = itemChoseBot(itemsBot);
-            Fighter fighterUser = new Fighter(0, personUser, itemUser);
-            Fighter fighterBot = new Fighter(1, personBot, itemBot);
-            ArrayList<Fighter> fighters = new ArrayList<>();
-            fighters.add(fighterUser);
-            fighters.add(fighterBot);
-            FighterConfiguration fighterConfiguration = new FighterConfiguration("asd", fighters);
-            String response = new String(requestMetods.PostRequestToServer("http://localhost:8002/fight",
-                    jsonBuild.parserFighter(fighterConfiguration)));
-            fighterConfiguration = jsonBuild.fromJsonFighter(response);
-            personUser.setHp(fighterConfiguration.getFighters()
-                    .get(0)
-                    .getPerson()
-                    .getHp());
-            personBot.setHp(fighterConfiguration.getFighters()
-                    .get(1)
-                    .getPerson()
-                    .getHp());
-            if (personUser.getHp() < 0) {
-                System.out.println("0 hp user\n");
-            } else {
-                System.out.println(personUser.getHp() + " hp " + personUser.getName() + " (you)\n");
-            }
-            if (personBot.getHp() < 0) {
-                System.out.println("0 hp bot\n");
-            } else {
-                System.out.println(personBot.getHp() + " hp " + personBot.getName() + " (bot)\n");
-            }
+            List<Person> personList = goToServerForFight(
+                    chooseItemForFight(personUser, personBot, itemsUser, itemsBot));
+            personUser.setHp(personList.get(0).getHp());
+            personBot.setHp(personList.get(1).getHp());
+            personList.forEach(this::showFightResult);
         }
+        showCommonResult(personUser);
+        exitGame();
+    }
+
+    private List<Person> goToServerForFight(List<Fighter> fighters){
+        FighterConfiguration fighterConfiguration = new FighterConfiguration("asd", fighters);
+        String response = new String(requestMetods.postRequestToServer("http://localhost:8002/fight",
+                jsonBuild.parserFighter(fighterConfiguration)));
+        fighterConfiguration = jsonBuild.fromJsonFighter(response);
+        List<Person> personList = new ArrayList<>();
+        personList.add(fighterConfiguration.getFighters().get(0).getPerson());
+        personList.add(fighterConfiguration.getFighters().get(1).getPerson());
+        return personList;
+    }
+
+    private ArrayList<Fighter> chooseItemForFight(Person personUser ,Person personBot
+            ,List<Item> itemsUser, List<Item> itemsBot){
+        Item itemUser = itemChoseUser(itemsUser);
+        Item itemBot = itemChoseBot(itemsBot);
+        Fighter fighterUser = new Fighter(0, personUser, itemUser);
+        Fighter fighterBot = new Fighter(1, personBot, itemBot);
+        ArrayList<Fighter> fighters = new ArrayList<>();
+        fighters.add(fighterUser);
+        fighters.add(fighterBot);
+        return fighters;
+    }
+
+    private void showFightResult(Person person){
+        if (person.getHp() < 0) {
+            System.out.println("0 hp "+ person.getName() +"\n");
+        } else {
+            System.out.println(person.getHp() + " hp " + person.getName() + " \n");
+        }
+    }
+
+    private void showCommonResult(Person personUser){
         if (personUser.getHp() > 0) {
             System.out.println("You win!!!!!");
         } else {
             System.out.println("You lose((((");
         }
-        exitGame();
+    }
+
+    private void fight(){
+
     }
 
     @Override

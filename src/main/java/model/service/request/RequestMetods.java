@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -17,6 +16,7 @@ public class RequestMetods {
 
     public RequestMetods() {
     }
+//TODO БАХНУТЬ КОНСТАНТЫ ПО ТИПУ : /LOCALHOST:8002 , /FIGHT
 
     public HttpResponse<String> sendRequest(String url) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
@@ -25,8 +25,8 @@ public class RequestMetods {
                 .build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
-
-    public byte[] PostRequestToServer(String muUrl, String params) {
+//TODO ЕБАНУТЬ ИЗ БОЛЬШОГО В МАЛЕНЬКИЕ МЕТОДЫ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public byte[] postRequestToServer(String muUrl, String params) {
         byte[] data = null;
         InputStream is = null;
 
