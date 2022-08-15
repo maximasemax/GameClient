@@ -4,15 +4,14 @@ import model.impl.Fighter;
 import model.impl.FighterConfiguration;
 import model.impl.Item;
 import model.impl.Person;
-import model.service.PersonService;
-import model.service.jsonBuild.JsonBuildForFight;
 import model.service.ItemService;
 import model.service.MenuService;
 import model.service.MessageService;
+import model.service.PersonService;
+import model.service.jsonBuild.JsonBuildForFight;
 import model.service.request.RequestMetods;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,8 @@ import java.util.Scanner;
 
 public class MenuServiceImpl implements MenuService {
 
+    static final String BASEURL = "http://localhost:8002";
+    static final String FIGHT = "/fight";
     private final MessageService messageService = new MessageServiceImpl();
     private final Scanner scanner = new Scanner(System.in);
     private final JsonBuildForFight jsonBuild = new JsonBuildForFight();
@@ -31,7 +32,7 @@ public class MenuServiceImpl implements MenuService {
         messageService.showStartMessage();
         start();
     }
-//TODO  МЕТОД ОГРОМНЫЙ , РАЗДЕЛИТЬ И НАЗВАТЬ НОРМАЛЬНО !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     @Override
     public void startGame() throws IOException, InterruptedException, SQLException {
         PersonService personService = new PersonServiceImpl();
@@ -53,9 +54,9 @@ public class MenuServiceImpl implements MenuService {
         exitGame();
     }
 
-    private List<Person> goToServerForFight(List<Fighter> fighters){
+    private List<Person> goToServerForFight(List<Fighter> fighters) {
         FighterConfiguration fighterConfiguration = new FighterConfiguration("asd", fighters);
-        String response = new String(requestMetods.postRequestToServer("http://localhost:8002/fight",
+        String response = new String(requestMetods.postRequestToServer(BASEURL + FIGHT,
                 jsonBuild.parserFighter(fighterConfiguration)));
         fighterConfiguration = jsonBuild.fromJsonFighter(response);
         List<Person> personList = new ArrayList<>();
@@ -64,8 +65,8 @@ public class MenuServiceImpl implements MenuService {
         return personList;
     }
 
-    private ArrayList<Fighter> chooseItemForFight(Person personUser ,Person personBot
-            ,List<Item> itemsUser, List<Item> itemsBot){
+    private ArrayList<Fighter> chooseItemForFight(Person personUser, Person personBot
+            , List<Item> itemsUser, List<Item> itemsBot) {
         Item itemUser = itemChoseUser(itemsUser);
         Item itemBot = itemChoseBot(itemsBot);
         Fighter fighterUser = new Fighter(0, personUser, itemUser);
@@ -76,15 +77,15 @@ public class MenuServiceImpl implements MenuService {
         return fighters;
     }
 
-    private void showFightResult(Person person){
+    private void showFightResult(Person person) {
         if (person.getHp() < 0) {
-            System.out.println("0 hp "+ person.getName() +"\n");
+            System.out.println("0 hp " + person.getName() + "\n");
         } else {
             System.out.println(person.getHp() + " hp " + person.getName() + " \n");
         }
     }
 
-    private void showCommonResult(Person personUser){
+    private void showCommonResult(Person personUser) {
         if (personUser.getHp() > 0) {
             System.out.println("You win!!!!!");
         } else {
@@ -92,7 +93,7 @@ public class MenuServiceImpl implements MenuService {
         }
     }
 
-    private void fight(){
+    private void fight() {
 
     }
 

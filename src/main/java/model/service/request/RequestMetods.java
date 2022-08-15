@@ -16,7 +16,6 @@ public class RequestMetods {
 
     public RequestMetods() {
     }
-//TODO БАХНУТЬ КОНСТАНТЫ ПО ТИПУ : /LOCALHOST:8002 , /FIGHT
 
     public HttpResponse<String> sendRequest(String url) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
@@ -25,30 +24,18 @@ public class RequestMetods {
                 .build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
-//TODO ЕБАНУТЬ ИЗ БОЛЬШОГО В МАЛЕНЬКИЕ МЕТОДЫ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     public byte[] postRequestToServer(String muUrl, String params) {
         byte[] data = null;
         InputStream is = null;
 
         try {
-            URL url = new URL(muUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-
-            conn.setRequestProperty("Content-Length", "" + Integer.toString(params.getBytes().length));
-            OutputStream os = conn.getOutputStream();
-            data = params.getBytes(StandardCharsets.UTF_8);
-            os.write(data);
-            data = null;
+            HttpURLConnection conn = flashPostRequest(muUrl, params, data);
 
             conn.connect();
-            int responseCode = conn.getResponseCode();
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             is = conn.getInputStream();
-
             byte[] buffer = new byte[81922];
             int bytesRead;
             while ((bytesRead = is.read(buffer)) != -1) {
@@ -68,4 +55,17 @@ public class RequestMetods {
         return data;
     }
 
+    private HttpURLConnection flashPostRequest(String muUrl, String params, byte[] data ) throws IOException {
+        URL url = new URL(muUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+
+        conn.setRequestProperty("Content-Length", "" + Integer.toString(params.getBytes().length));
+        OutputStream os = conn.getOutputStream();
+        data = params.getBytes(StandardCharsets.UTF_8);
+        os.write(data);
+        return conn;
+    }
 }
