@@ -1,12 +1,12 @@
 package model.service.request;
 
 import model.impl.Item;
-import model.service.jsonBuild.JsonBuildForItem;
+import model.service.jsonBuild.JsonBuildItem;
 
 import java.io.IOException;
 import java.util.List;
 
-public class RequestForItem {
+public class ItemService {
 
     static final String BASEURL = "http://localhost:8002";
     static final String ITEM = "/getItem";
@@ -18,7 +18,7 @@ public class RequestForItem {
         StringBuilder stringBuilder = new StringBuilder();
         for (char c : rezult) stringBuilder.append(c);
         String itemsListStr = stringBuilder.toString();
-        JsonBuildForItem jsonBuildForItem = new JsonBuildForItem();
-        return jsonBuildForItem.fromJsonItem(itemsListStr);
+        JsonBuildItem jsonBuildItem = new JsonBuildItem();
+        return jsonBuildItem.fromJsonItem(itemsListStr);
     }
 }

@@ -1,10 +1,9 @@
 package model.service.jsonBuild;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import model.impl.FighterConfiguration;
 
-public class JsonBuildForFight {
+public class JsonBuildFight {
 
     public String parserFighter(FighterConfiguration fighterConfiguration) {
         return new Gson().toJson(fighterConfiguration);

@@ -1,8 +1,7 @@
 package model.service.impl;
 
 import model.impl.Item;
-import model.service.ItemService;
-import model.service.request.RequestForItem;
+import model.service.request.ItemService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class ItemServiceImpl implements ItemService {
+public class ItemServiceImpl implements model.service.ItemService {
 
     Scanner scanner = new Scanner(System.in);
 
@@ -36,8 +35,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getItem() throws IOException, InterruptedException {
-        RequestForItem requestForItem = new RequestForItem();
-        return requestForItem.getItems();
+        ItemService itemService = new ItemService();
+        return itemService.getItems();
     }
 
     @Override

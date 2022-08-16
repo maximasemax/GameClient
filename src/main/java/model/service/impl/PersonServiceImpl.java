@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import model.impl.Person;
 import model.impl.PersonConfigurationImpl;
-import model.service.PersonService;
-import model.service.request.RequestPerson;
+import model.service.request.PersonService;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class PersonServiceImpl implements PersonService {
+public class PersonServiceImpl implements model.service.PersonService {
 
     Scanner scanner = new Scanner(System.in);
 
@@ -38,8 +37,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<Person> getPersons() throws IOException, InterruptedException {
-        RequestPerson requestPerson = new RequestPerson();
-        return requestPerson.getPersons();
+        PersonService personService = new PersonService();
+        return personService.getPersons();
     }
 
     @Override

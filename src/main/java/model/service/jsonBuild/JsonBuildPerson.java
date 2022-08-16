@@ -6,7 +6,7 @@ import model.impl.PersonConfigurationImpl;
 
 import java.util.List;
 
-public class JsonBuildForPerson {
+public class JsonBuildPerson {
 
     public List<Person> fromJsonPersons(String jsonString) {
         return new Gson().fromJson(jsonString, PersonConfigurationImpl.class).getPersons();

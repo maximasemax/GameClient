@@ -6,7 +6,7 @@ import model.impl.ItemConfigurationImpl;
 
 import java.util.List;
 
-public class JsonBuildForItem {
+public class JsonBuildItem {
 
     public List<Item> fromJsonItem(String jsonString){
         return new Gson().fromJson(jsonString, ItemConfigurationImpl.class).getItems();

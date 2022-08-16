@@ -8,7 +8,7 @@ import model.service.ItemService;
 import model.service.MenuService;
 import model.service.MessageService;
 import model.service.PersonService;
-import model.service.jsonBuild.JsonBuildForFight;
+import model.service.jsonBuild.JsonBuildFight;
 import model.service.request.RequestMetods;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class MenuServiceImpl implements MenuService {
     static final String FIGHT = "/fight";
     private final MessageService messageService = new MessageServiceImpl();
     private final Scanner scanner = new Scanner(System.in);
-    private final JsonBuildForFight jsonBuild = new JsonBuildForFight();
+    private final JsonBuildFight jsonBuild = new JsonBuildFight();
     private final RequestMetods requestMetods = new RequestMetods();
 
     @Override
